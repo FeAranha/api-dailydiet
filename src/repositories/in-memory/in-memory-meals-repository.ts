@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto"
 export class InMemoryMealsRepository implements MealsRepository {
   public items: Meal[] = []
 
-  async findById(id: string) {
+  async findById(id: string): Promise<Meal | null> {
     const meal = this.items.find((item) => item.id === id)
 
     if (!meal) {
@@ -27,5 +27,9 @@ export class InMemoryMealsRepository implements MealsRepository {
     this.items.push(meal)
     
     return meal
+  }
+
+  async delete(id: string): Promise<void> {
+    this.items = this.items.filter((item) => item.id !== id)
   }
 }
