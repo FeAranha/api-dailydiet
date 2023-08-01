@@ -18,11 +18,12 @@ describe('DeleteMealUseCase', () => {
     const userId = 'user-id';
     const mealId = 'meal-id';
     await mealsRepository.create({
+      id: mealId,
       title: 'Meal 1',
       description: 'Description 1',
       mealDateTime: new Date(),
       isDiet: false,
-      user: { connect: { id: 'user-id' }}
+      user: { connect: { id: userId }}
     });
 
     // Executar o caso de uso
