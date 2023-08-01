@@ -22,12 +22,16 @@ export class CreateMealUseCase {
     isDiet,
     userId,
   }: CreateMealUseCaseRequest): Promise<CreateMealUseCaseResponse> {
+    if (!userId) {
+      throw new Error('O userId do usuário é obrigatório para criar uma refeição.');
+    }
+    
     const meal = await this.mealsRepository.create({
       title,
       description,
       mealDateTime,
       isDiet,
-      userId,
+      user: { connect: { id: userId } }
     })
     return { meal }
   }
