@@ -1,0 +1,5 @@
+NODE_ENV=dev
+
+DATABASE_URL="postgresql://docker:docker@localhost:5432/dbdailydiet?schema=public"
+
+JWT_SECRET=
