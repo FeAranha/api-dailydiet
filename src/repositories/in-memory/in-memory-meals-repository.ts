@@ -14,6 +14,11 @@ export class InMemoryMealsRepository implements MealsRepository {
     return meal
   }
 
+  async findAllByUserId(userId: string): Promise<Meal[]> {
+    const meals = this.items.filter((item) => item.userId === userId);
+    return meals;
+  }
+
   async create(data: Prisma.MealCreateInput): Promise<Meal> {
     const meal: Meal = {
       id: data.id ?? randomUUID(),

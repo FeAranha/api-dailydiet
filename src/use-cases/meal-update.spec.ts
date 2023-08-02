@@ -78,7 +78,7 @@ describe('MealUpdateUseCase', () => {
     const result = await updateMealUseCase.execute(invalidMealData);
 
     expect(result.success).toBe(false);
-    expect(result.message).toBe('ID, título e data da refeição são obrigatórios.');
+    expect(result.message).toBe('Refeição não encontrada.');
     expect(result.meal).toBeUndefined();
   });
 });
