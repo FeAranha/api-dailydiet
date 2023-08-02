@@ -14,7 +14,7 @@ interface CreateMealUseCaseResponse {
 }
 
 export class CreateMealUseCase {
-  constructor(private mealsRepository: MealsRepository) { }
+  constructor(private mealsRepository: MealsRepository) {}
   async execute({
     title,
     description,

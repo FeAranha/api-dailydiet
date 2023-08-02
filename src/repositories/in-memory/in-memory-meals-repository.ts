@@ -25,11 +25,38 @@ export class InMemoryMealsRepository implements MealsRepository {
     }
 
     this.items.push(meal)
-    
+
     return meal
   }
 
   async delete(id: string): Promise<void> {
     this.items = this.items.filter((item) => item.id !== id)
+  }
+
+  async update(id: string, data: Prisma.MealUpdateInput): Promise<Meal | null> {
+    const mealIndex = this.items.findIndex((item) => item.id === id)
+
+    if (mealIndex === -1) {
+      return null
+    }
+
+    const updatedMeal: Meal = Object.assign({}, this.items[mealIndex], {
+      title: data.title !== undefined ? data.title : this.items[mealIndex].title,
+      description:
+        data.description !== undefined
+          ? data.description
+          : this.items[mealIndex].description,
+      mealDateTime:
+        data.mealDateTime !== undefined
+          ? typeof data.mealDateTime === "string"
+            ? new Date(data.mealDateTime)
+            : data.mealDateTime
+          : this.items[mealIndex].mealDateTime,
+      isDiet:
+        data.isDiet !== undefined ? data.isDiet : this.items[mealIndex].isDiet,
+    })
+
+    this.items[mealIndex] = updatedMeal
+    return updatedMeal
   }
 }
