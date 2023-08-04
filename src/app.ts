@@ -18,7 +18,6 @@ app.register(fastifyJwt, {
 
 app.register(fastifyCookie)
 app.register(appRoutes)
-app.register(fastifyCookie)
 
 app.setErrorHandler((error, _, reply) => {
   if(error instanceof ZodError) {

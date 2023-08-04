@@ -2,13 +2,16 @@ import { InMemoryMealsRepository } from '@/repositories/in-memory/in-memory-meal
 import { MealsRepository } from '@/repositories/meals-repository';
 import { GetAllMealsUseCase } from './getAll-user-meals';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { parseISO } from 'date-fns';
 
 interface MealCreateData {
+  id: string;
   title: string;
   description: string;
-  mealDateTime: Date;
+  mealDateTime: Date
   isDiet: boolean;
-  userId: string;
+  user: { connect: { id: string } };
+  userId: string
 }
 
 describe('GetAllMealsUseCase', () => {
@@ -25,32 +28,41 @@ describe('GetAllMealsUseCase', () => {
     const userId = 'user-id-1';
 
     const meal1: MealCreateData = {
+      id: 'id-1',
       title: 'Meal 1',
       description: 'Description 1',
       mealDateTime: new Date(),
       isDiet: false,
-      userId: userId
+      user: { connect: { id: userId } },
+      userId: userId,
     };
     const meal2: MealCreateData = {
+      id: 'id-2',
       title: 'Meal 2',
       description: 'Description 2',
       mealDateTime: new Date(),
       isDiet: true,
-      userId: userId
+      user: { connect: { id: userId } },
+      userId: userId,
     };
 
-    await mealsRepository.create(meal1);
-    await mealsRepository.create(meal2);
+    await Promise.all([
+      mealsRepository.create(meal1),
+      mealsRepository.create(meal2)
+    ]);
 
     // Executar o caso de uso para obter todas as refeições do usuário
     const result = await getAllMealsUseCase.execute(userId);
+
+    console.log('Resultado obtido:', result.meals);
 
     // Verificar se o caso de uso retornou com sucesso e se todas as refeições foram obtidas
     expect(result.success).toBe(true);
     expect(result.message).toBeUndefined();
     expect(result.meals).toBeDefined();
     expect(result.meals).toHaveLength(2);
-    expect(result.meals).toEqual(expect.arrayContaining([meal1, meal2]));
+    console.log(meal1, meal2)
+    expect(result.meals).toStrictEqual([meal1, meal2]);
   });
 
   it('should return an empty list if the user has no meals', async () => {
