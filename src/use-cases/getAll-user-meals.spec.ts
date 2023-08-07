@@ -46,7 +46,6 @@ describe('GetAllMealsUseCase', () => {
     try {
       result = await sut.execute(userId)
       console.log('Resultado obtido:', result.meals);
-
       expect(result.success).toBe(true)
       expect(result.message).toBeUndefined()
       expect(result.meals).toBeDefined()
@@ -61,9 +60,7 @@ describe('GetAllMealsUseCase', () => {
   })
 
   it('should return an empty list if the user has no meals', async () => {
-
     const userId = 'user-id-2'
-
     const result = await sut.execute(userId)
 
     expect(result.success).toBe(true);
