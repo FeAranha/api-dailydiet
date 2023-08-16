@@ -45,7 +45,7 @@ describe('GetAllMealsUseCase', () => {
 
     try {
       result = await sut.execute(userId)
-      console.log('Resultado obtido:', result.meals);
+    
       expect(result.success).toBe(true)
       expect(result.message).toBeUndefined()
       expect(result.meals).toBeDefined()

@@ -1,6 +1,8 @@
 import { Prisma, User } from "@prisma/client";
 import { UsersRepository } from "../users-repository";
 
+let nextUserId = 1;
+
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
 
@@ -23,10 +25,10 @@ export class InMemoryUsersRepository implements UsersRepository {
 
     return user
   }
-
+  
   async create(data: Prisma.UserCreateInput): Promise<User> {
-      const user = {
-        id: 'user-1',
+      const user: User = {
+        id: `user-id-${nextUserId}`,
         name: data.name,
         email: data.email,
         avatar: null,
@@ -34,6 +36,7 @@ export class InMemoryUsersRepository implements UsersRepository {
         created_at: new Date(),
     }
     this.items.push(user)
+    nextUserId++
 
     return user
   }

@@ -39,7 +39,6 @@ describe('GetUserMealUseCase', () => {
 
     const result = await sut.execute(request);
     
-    console.log('resultado obtido', result)
     expect(result.success).toBe(true);
     expect(result.meal).toBeDefined();
     expect(result.meal).toBeDefined();

@@ -3,12 +3,6 @@ import { UsersRepository } from "@/repositories/users-repository"
 import { Meal } from "@prisma/client";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
-//TODO
-// - Total de refeições: ok
-// - Refeições fora da diet: ok
-// - Rfefeições dentro da dieta(mealsDiet): ok
-// - Melhor sequencia de refeições diet:
-
 interface GetUserMetricsUseCaseResquest {
   userId: string;
 }
@@ -35,8 +29,6 @@ export class GetUserMetricsUseCase {
     let longestSequence: Meal[] = [];
   
     for (const meal of sortedMeals) {
-      // Se a sequência atual estiver vazia ou a data da refeição atual for
-      // posterior à data da última refeição da sequência atual, comece uma nova sequência
       if (
         currentSequence.length === 0 ||
         meal.mealDateTime.getTime() ===
@@ -47,16 +39,13 @@ export class GetUserMetricsUseCase {
         currentSequence.push(meal);
       }
   
-      // Se a sequência atual for mais longa do que a sequência mais longa registrada até agora,
-      // atualize a sequência mais longa
       if (currentSequence.length > longestSequence.length) {
         longestSequence = [...currentSequence];
       }
     }
-  
+
     return longestSequence;
   }
-  
 
   async execute({ userId }: GetUserMetricsUseCaseResquest): Promise<GetUserMetricsUseCaseResponse> {
     const user = await this.usersRepository.findById(userId);

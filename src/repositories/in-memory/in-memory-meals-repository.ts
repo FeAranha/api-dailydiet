@@ -5,10 +5,10 @@ import { randomUUID } from "node:crypto"
 export class InMemoryMealsRepository implements MealsRepository {
   public items: Meal[] = []
 
-  async findOneByUserIdAndMealId(userId: string, mealId: string): Promise<Meal | null>{
+  async findOneByUserIdAndMealId(userId: string, mealId: string): Promise<Meal | null> {
     return this.items.find(item => item.userId === userId && item.id === mealId) || null
   }
-  
+
   async findById(id: string): Promise<Meal | null> {
     const meal = this.items.find((item) => item.id === id)
 
@@ -18,7 +18,7 @@ export class InMemoryMealsRepository implements MealsRepository {
     return meal
   }
 
- async findAllByUserId(userId: string): Promise<Meal[]> {
+  async findAllByUserId(userId: string): Promise<Meal[]> {
     const meals = this.items.filter((item) => item.userId === userId);
     return meals;
   }
