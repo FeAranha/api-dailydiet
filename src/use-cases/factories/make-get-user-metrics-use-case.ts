@@ -2,7 +2,7 @@ import { PrismaMealsRepository } from '@/repositories/prisma/prisma-meals-reposi
 import {PrismaUsersRepository} from '@/repositories/prisma/prisma-users-repository'
 import {GetUserMetricsUseCase} from '../get-user-metrics'
 
-export function makeCreateMealUseCase() {
+export function makeGetUserMetricsUseCase() {
   const usersRepository = new PrismaUsersRepository()
   const mealsRepository = new PrismaMealsRepository()
   
