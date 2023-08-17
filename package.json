@@ -10,7 +10,7 @@
     "test": "vitest run --dir src/use-cases",
     "test:watch": "vitest --dir src/use-cases"
   },
-  "author": "",
+  "author": "Felipe Aranha",
   "license": "ISC",
   "devDependencies": {
     "@types/bcryptjs": "2.4.2",
