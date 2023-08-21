@@ -13,8 +13,8 @@ describe('Create Meal (e2e)', () => {
   })
 
   it('should be able to create a meal', async () => {
-    const { token } = await createAndAuthenticateUser(app)
-
+    const { token, user_id} = await createAndAuthenticateUser(app)
+    console.log('userId(spec) ok=>', user_id)
     const response = await request(app.server)
       .post('/meals')
       .set('Authorization', `Bearer ${token}`)
@@ -23,6 +23,7 @@ describe('Create Meal (e2e)', () => {
         description: 'delicius meal.',
         mealDateTime: new Date(),
         isDiet: true,
+        userId: user_id
       })
 
     expect(response.statusCode).toEqual(201)
