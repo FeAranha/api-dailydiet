@@ -3,9 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
-  const userId = request.user.sub
-  console.log('user ID =>', userId)
-
+  
   const createMealBodySchema = z.object({
     title: z.string(),
     description: z.string(),

@@ -1,8 +1,9 @@
 import { FastifyInstance } from 'fastify'
 import request from 'supertest'
+import jwt from 'jsonwebtoken';
 
 export async function createAndAuthenticateUser(app: FastifyInstance) {
-  const createUserResponse = await request(app.server).post('/users').send({
+  await request(app.server).post('/users').send({
     name: 'John Doe',
     email: 'johndoe@example.com',
     password: '123456',
@@ -14,17 +15,18 @@ export async function createAndAuthenticateUser(app: FastifyInstance) {
   })
 
   const { token } = authResponse.body
-console.log('token =>>', token)
-  const me = await request(app.server)
-    .get('/me')
-    .set('Authorization', `Bearer ${token}`)
+  console.log('token =>>', token)
+  const decodedToken = jwt.decode(token)
 
-  const user_id = me.body.user.id
+  if (!decodedToken || typeof decodedToken != 'object') {
+    throw new Error('Invalid token or decoding error')
+  }
+
+  const user_id = decodedToken.sub
 
   console.log('quero: =>', user_id)
   return {
     token,
-    user: createUserResponse.body,
     user_id,
   }
 }
