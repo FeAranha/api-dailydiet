@@ -58,9 +58,9 @@ export class GetUserMetricsUseCase {
     const diets: string[] = meals.filter(meal => meal.isDiet).map(meal => meal.title);
     const notDiets: string[] = meals.filter(meal => !meal.isDiet).map(meal => meal.title);
 
-    const dietMeals = meals.filter(meal => meal.isDiet);
-    const maxSequence = this.calculateMaxSequence(dietMeals)
-
+    const Meals = meals.filter(meal => meal);
+    const maxSequence = this.calculateMaxSequence(Meals)
+    console.log('maxSeq =>', maxSequence)
     return {
       bestDietSequence: maxSequence,
       totalMeals: meals.length,
