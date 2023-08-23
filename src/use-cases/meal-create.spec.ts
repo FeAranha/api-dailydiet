@@ -15,7 +15,7 @@ describe('Create Meal Use Case', () => {
     const { meal } = await sut.execute({
       title: 'Meal 1',
       description: 'Description 1',
-      mealDateTime: new Date(),
+      //mealDateTime: new Date(),
       isDiet: false,
       userId: 'user-id'
     })

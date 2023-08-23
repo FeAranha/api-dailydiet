@@ -62,11 +62,9 @@ describe('MealUpdateUseCase', () => {
   });
 
   it('should return error when data is invalid', async () => {
-    // Definir mealId e userId válidos, mas dados inválidos (título e data ausentes)
     const mealId = 'meal-id';
     const userId = 'user-id';
 
-    // Executar o caso de uso e verificar se ele lança um erro
     const invalidMealData = {
       id: mealId,
       title: 'Invalid Meal',

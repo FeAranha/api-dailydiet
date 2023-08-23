@@ -13,8 +13,8 @@ describe('Create Meal (e2e)', () => {
   })
 
   it('should be able to create a meal', async () => {
-    const { token, user_id } = await createAndAuthenticateUser(app)
-    console.log('logged in userId => ', user_id)
+    const { token } = await createAndAuthenticateUser(app)
+    console.log('logged in userId => ',)
 
     const mealData = {
       title: '1# meal',

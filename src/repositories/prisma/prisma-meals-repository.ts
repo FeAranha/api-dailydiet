@@ -3,11 +3,13 @@ import { MealsRepository } from "../meals-repository"
 import { prisma } from "@/lib/prisma";
 
 export class PrismaMealsRepository implements MealsRepository {
-  async findAllByUserId(userId: string): Promise<Meal[]> {
+  async findAllByUserId(userId: string, page: number): Promise<Meal[]> {
     const meals = await prisma.meal.findMany({
       where: {
         userId: userId,
       },
+      take: 20,
+      skip: (page - 1) * 10
     })
     return meals
   }

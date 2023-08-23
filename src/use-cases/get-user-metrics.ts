@@ -5,13 +5,14 @@ import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface GetUserMetricsUseCaseResquest {
   userId: string;
+  page: number;
 }
 
 interface GetUserMetricsUseCaseResponse {
   totalMeals: number;
-  diets: string[];
-  notDiets: string[];
-  bestDietSequence: Meal[];
+  diets: number;
+  notDiets: number;
+  bestDietSequence: number;
 }
 
 export class GetUserMetricsUseCase {
@@ -20,53 +21,51 @@ export class GetUserMetricsUseCase {
     private mealsRepository: MealsRepository,
   ) { }
 
-  private calculateMaxSequence(dietMeals: Meal[]): Meal[] {
-    const sortedMeals = [...dietMeals].sort((mealA, mealB) =>
-      mealA.mealDateTime.getTime() - mealB.mealDateTime.getTime()
-    );
+  private calculateMaxSequence(dietMeals: Meal[]): number {
+    let currentSequenceLength = 0;
+    let longestSequenceLength = 0;
   
-    let currentSequence: Meal[] = [];
-    let longestSequence: Meal[] = [];
-  
-    for (const meal of sortedMeals) {
-      if (
-        currentSequence.length === 0 ||
-        meal.mealDateTime.getTime() ===
-          currentSequence[currentSequence.length - 1].mealDateTime.getTime() + 86400000 // Um dia em milissegundos
-      ) {
-        currentSequence = [meal];
+    for (const meal of dietMeals) {
+      if (meal.isDiet) {
+        currentSequenceLength++;
+        console.log('Current sequence=>', currentSequenceLength)
       } else {
-        currentSequence.push(meal);
-      }
-  
-      if (currentSequence.length > longestSequence.length) {
-        longestSequence = [...currentSequence];
+        if (currentSequenceLength > longestSequenceLength) {
+          longestSequenceLength = currentSequenceLength;
+          console.log('Longest sequence:', longestSequenceLength);
+        }
+        currentSequenceLength = 0;
       }
     }
-
-    return longestSequence;
+  
+    if (currentSequenceLength > longestSequenceLength) {
+      longestSequenceLength = currentSequenceLength;
+      console.log('Longest sequence:', longestSequenceLength);
+    }
+  
+    return longestSequenceLength;
   }
 
-  async execute({ userId }: GetUserMetricsUseCaseResquest): Promise<GetUserMetricsUseCaseResponse> {
+  async execute({ userId, page }: GetUserMetricsUseCaseResquest): Promise<GetUserMetricsUseCaseResponse> {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new ResourceNotFoundError()
     }
 
-    const meals = await this.mealsRepository.findAllByUserId(user.id);
+    const meals = await this.mealsRepository.findAllByUserId(user.id, page);
 
     const diets: string[] = meals.filter(meal => meal.isDiet).map(meal => meal.title);
     const notDiets: string[] = meals.filter(meal => !meal.isDiet).map(meal => meal.title);
 
     const dietMeals = meals.filter(meal => meal.isDiet);
-    const maxSequence: Meal[] = this.calculateMaxSequence(dietMeals)
-    
+    const maxSequence = this.calculateMaxSequence(dietMeals)
+
     return {
       bestDietSequence: maxSequence,
       totalMeals: meals.length,
-      diets: diets,
-      notDiets: notDiets,
+      diets: diets.length,
+      notDiets: notDiets.length
     }
   }
 }

@@ -27,32 +27,51 @@ describe('GetUserMetricsUseCase', () => {
     };
     await usersRepository.create(user);
 
-    const meal1 = await mealsRepository.create({
-      id: 'meal-id-1',
+    await mealsRepository.create({
+      //id: 'meal-id-1',
       title: 'Meal 1',
       description: 'Description 1 | in-memory' ,
-      mealDateTime: new Date(),
+      //mealDateTime: new Date(),
       isDiet: true,
       user: { connect: { id: user.id } },
     });
 
-    const meal2 = await mealsRepository.create({
-      id: 'meal-id-2',
-      title: 'Meal 2',
-      description: 'Description 2 | in-memory',
-      mealDateTime: new Date(),
-      isDiet: true,
-      user: { connect: { id: user.id } },
-    });
-
-    const meal3 = await mealsRepository.create({
-      id: 'meal-id-3',
-      title: 'Non-Diet Meal',
-      description: 'Non-Diet Description | in-memory',
-      mealDateTime: new Date(),
+     await mealsRepository.create({
+      //id: 'meal-id-2',
+      title: 'Non-Diet Meal 2',
+      description: 'Non-Diet Description 2 | in-memory',
+      //mealDateTime: new Date(),
       isDiet: false,
       user: { connect: { id: user.id } },
     });
+
+    await mealsRepository.create({
+      //id: 'meal-id-3',
+      title: 'Meal 3',
+      description: 'Description | in-memory',
+      //mealDateTime: new Date(),
+      isDiet: true,
+      user: { connect: { id: user.id } },
+    });
+
+    await mealsRepository.create({
+      //id: 'meal-id-4',
+      title: 'Meal 4',
+      description: 'Description | in-memory',
+      //mealDateTime: new Date(),
+      isDiet: true,
+      user: { connect: { id: user.id } },
+    });
+
+    await mealsRepository.create({
+      //id: 'meal-id-5',
+      title: 'Non-Diet Meal 5',
+      description: 'Non-Diet Description | in-memory',
+      //mealDateTime: new Date(),
+      isDiet: false,
+      user: { connect: { id: user.id } },
+    });
+
 
     const allMeals = mealsRepository.findAllByUserId(user.id)
     console.log('meals:', allMeals)
@@ -68,14 +87,15 @@ describe('GetUserMetricsUseCase', () => {
 
     const request = {
       userId: user.id,
+      page: 1
     };
 
     const result = await getUserMetricsUseCase.execute(request);
     console.log('Resultado obtido:', result);
     
-    expect(result.totalMeals).toBe(3);
-    expect(result.diets).toEqual(['Meal 1', 'Meal 2']);
-    expect(result.notDiets).toEqual(['Non-Diet Meal']);
-    expect(result.bestDietSequence).toEqual([meal1, meal2]);
+    expect(result.totalMeals).toBe(5);
+    expect(result.diets).toEqual(3);
+    expect(result.notDiets).toEqual(2);
+    expect(result.bestDietSequence).toEqual(2);
   });
 });
