@@ -4,7 +4,6 @@ import { MealsRepository } from '@/repositories/meals-repository'
 interface CreateMealUseCaseRequest {
   title: string
   description: string
-  mealDateTime: Date
   isDiet: boolean
   userId: string
 }
@@ -18,7 +17,6 @@ export class CreateMealUseCase {
   async execute({
     title,
     description,
-    mealDateTime,
     isDiet,
     userId,
   }: CreateMealUseCaseRequest): Promise<CreateMealUseCaseResponse> {
@@ -29,7 +27,6 @@ export class CreateMealUseCase {
     const meal = await this.mealsRepository.create({
       title,
       description,
-      mealDateTime,
       isDiet,
       user: { connect: { id: userId } }
     })

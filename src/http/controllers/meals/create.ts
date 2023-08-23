@@ -3,25 +3,27 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
-  
-  const createMealBodySchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    mealDateTime: z.date(),
-    isDiet: z.boolean(),
-  })
+  try {
+    const createMealBodySchema = z.object({
+      title: z.string(),
+      description: z.string(),
+      isDiet: z.boolean(),
+    })
 
-  const { title, description, mealDateTime, isDiet } = createMealBodySchema.parse(request.body)
+    const { title, description, isDiet } = createMealBodySchema.parse(request.body)
 
-  const createMealUseCase = makeCreateMealUseCase()
+    const createMealUseCase = makeCreateMealUseCase()
 
-  await createMealUseCase.execute({
-    title,
-    description,
-    mealDateTime,
-    isDiet,
-    userId: request.user.sub
-  })
+    await createMealUseCase.execute({
+      title,
+      description,
+      isDiet,
+      userId: request.user.sub
+    })
 
-  return reply.status(201).send()
+    return reply.status(201).send();
+  } catch (error) {
+    console.error('Error creating meal:', error);
+    return reply.status(500).send('An error occurred while creating the meal.');
+  }
 }

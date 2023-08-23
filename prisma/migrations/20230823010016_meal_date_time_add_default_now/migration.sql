@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "meals" ALTER COLUMN "mealDateTime" SET DEFAULT CURRENT_TIMESTAMP;

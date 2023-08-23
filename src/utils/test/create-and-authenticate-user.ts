@@ -15,9 +15,9 @@ export async function createAndAuthenticateUser(app: FastifyInstance) {
   })
 
   const { token } = authResponse.body
-  console.log('token =>>', token)
+console.log('token sub =>', token)  
   const decodedToken = jwt.decode(token)
-
+console.log('decodedToken sub =>', decodedToken?.sub)
   if (!decodedToken || typeof decodedToken != 'object') {
     throw new Error('Invalid token or decoding error')
   }
