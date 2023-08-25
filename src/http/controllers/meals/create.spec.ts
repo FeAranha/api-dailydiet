@@ -14,7 +14,6 @@ describe('Create Meal (e2e)', () => {
 
   it('should be able to create a meal', async () => {
     const { token } = await createAndAuthenticateUser(app)
-    console.log('logged in userId => ',)
 
     const mealData = {
       title: '1# meal',
@@ -30,7 +29,7 @@ describe('Create Meal (e2e)', () => {
       .send(mealData)
 
     console.log('Response status:', response.statusCode);
-    console.log('Response body:', response.body);
+    console.log('Response body:', response.body)
 
     expect(response.statusCode).toEqual(201)
   })

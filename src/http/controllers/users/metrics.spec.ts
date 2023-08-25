@@ -61,10 +61,8 @@ describe('Meals Metrics (e2e)', () => {
       .send()
     expect(response.statusCode).toEqual(200)
     expect(response.body.totalMeals).toEqual(5)
-    expect(response.body.bestDietSequence).toEqual(2)
     expect(response.body.diets).toEqual(3)
     expect(response.body.notDiets).toEqual(2)
+    expect(response.body.bestDietSequence).toEqual(2)
   })
-
-  
 })
