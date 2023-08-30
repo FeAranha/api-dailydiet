@@ -2,7 +2,7 @@ import { MealsRepository } from "@/repositories/meals-repository";
 import { Meal } from "@prisma/client";
 
 interface GetAllMealsUseCaseRequest {
-  query: string
+  userId: string
   page: number
 }
 
@@ -15,10 +15,10 @@ interface GetAllMealsUseCaseResponse {
 export class GetAllMealsUseCase {
   constructor(private mealsRepository: MealsRepository) {}
 
-  async execute({query, page}: GetAllMealsUseCaseRequest): Promise<GetAllMealsUseCaseResponse> {
+  async execute({userId, page}: GetAllMealsUseCaseRequest): Promise<GetAllMealsUseCaseResponse> {
     try {
       //TODO verificar se o usuário está autenticado
-      const meals = await this.mealsRepository.findAllByUserId(query, page)
+      const meals = await this.mealsRepository.findAllByUserId(userId, page)
 
       return { success: true, meals }   
     } catch (error) {

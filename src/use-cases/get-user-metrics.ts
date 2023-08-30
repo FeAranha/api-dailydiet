@@ -24,26 +24,19 @@ export class GetUserMetricsUseCase {
   private calculateMaxSequence(dietMeals: Meal[]): number {
     let currentSequenceLength = 0;
     let longestSequenceLength = 0;
-  
+
     for (const meal of dietMeals) {
       if (meal.isDiet) {
         currentSequenceLength++;
+        longestSequenceLength = Math.max(longestSequenceLength, currentSequenceLength)
         console.log('Current sequence=>', currentSequenceLength)
       } else {
-        if (currentSequenceLength > longestSequenceLength) {
-          longestSequenceLength = currentSequenceLength;
-          console.log('Longest sequence:', longestSequenceLength);
-        }
         currentSequenceLength = 0;
+        console.log('Longest sequence:', longestSequenceLength);
       }
     }
-  
-    if (currentSequenceLength > longestSequenceLength) {
-      longestSequenceLength = currentSequenceLength;
-      console.log('Longest sequence:', longestSequenceLength);
-    }
-  
-    return longestSequenceLength;
+
+    return longestSequenceLength
   }
 
   async execute({ userId, page }: GetUserMetricsUseCaseResquest): Promise<GetUserMetricsUseCaseResponse> {
@@ -55,12 +48,16 @@ export class GetUserMetricsUseCase {
 
     const meals = await this.mealsRepository.findAllByUserId(user.id, page);
 
-    const diets: string[] = meals.filter(meal => meal.isDiet).map(meal => meal.title);
-    const notDiets: string[] = meals.filter(meal => !meal.isDiet).map(meal => meal.title);
+    const diets = meals.filter(meal => meal.isDiet)
+    const notDiets = meals.filter(meal => !meal.isDiet)
 
-    const Meals = meals.filter(meal => meal);
-    const maxSequence = this.calculateMaxSequence(Meals)
+    const sortedMeals = meals.sort((a, b) => a.mealDateTime.getTime() - b.mealDateTime.getTime());
+    console.log('meals=>', sortedMeals)
+    const maxSequence = this.calculateMaxSequence(sortedMeals)
+
     console.log('maxSeq =>', maxSequence)
+    
+    
     return {
       bestDietSequence: maxSequence,
       totalMeals: meals.length,

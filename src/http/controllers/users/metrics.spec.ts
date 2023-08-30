@@ -18,42 +18,45 @@ describe('Meals Metrics (e2e)', () => {
 
     const user = await prisma.user.findFirstOrThrow()
 
-    const mealsData = await prisma.meal.createMany({
+    await prisma.meal.createMany({
       data: [
         {
           userId: user.id,
           isDiet: true,
           description: 'meal 1',
-          title: '#1'
+          title: '#1',
+          mealDateTime: '2023-01-01T00:00:00.001Z'
         },
         {
           userId: user.id,
           isDiet: false,
           description: 'meal 2',
-          title: '#2'
+          title: '#2',
+          mealDateTime: '2023-01-01T00:00:00.002Z'
         },
         {
           userId: user.id,
           isDiet: true,
           description: 'meal 3',
-          title: '#3'
+          title: '#3',
+          mealDateTime: '2023-01-01T00:00:00.003Z'
         },
         {
           userId: user.id,
           isDiet: true,
           description: 'meal 4',
-          title: '#4'
+          title: '#4',
+          mealDateTime: '2023-01-01T00:00:00.004Z'
         },
         {
           userId: user.id,
           isDiet: false,
           description: 'meal 5',
-          title: '#5'
+          title: '#5',
+          mealDateTime: '2023-01-01T00:00:00.005Z'
         },
       ],
     })
-
-    console.log('metricsData =>', mealsData)
 
     const response = await request(app.server)
       .get('/metrics')

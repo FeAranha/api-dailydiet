@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 import { prisma } from '@/lib/prisma'
 
-describe('Delete Meal (e2e)', () => {
+describe('Find Meal (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -12,8 +12,8 @@ describe('Delete Meal (e2e)', () => {
   afterAll(async () => {
     await app.close()
   })
-
-  it('should be able to Delete a meal', async () => {
+  
+  it('should be able to Find a meal', async () => {
     const { token } = await createAndAuthenticateUser(app)
 
     const user = await prisma.user.findFirstOrThrow()
@@ -26,11 +26,11 @@ describe('Delete Meal (e2e)', () => {
         title: '#1'
       },
     })
-  
-    const deleteResponse = await request(app.server)
-      .delete(`/meals/${mealData.id}`)
+
+    const findResponse = await request(app.server)
+      .get(`/meals/${mealData.id}`)
       .set('Authorization', `Bearer ${token}`)
-      
-    expect(deleteResponse.status).toEqual(204)
+
+    expect(findResponse.status).toEqual(200)
   })
 })

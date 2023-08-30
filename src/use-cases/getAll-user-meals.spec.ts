@@ -44,7 +44,7 @@ describe('GetAllMealsUseCase', () => {
     let result
 
     try {
-      result = await sut.execute({query: userId, page: 1})
+      result = await sut.execute({userId: userId, page: 1})
     
       expect(result.success).toBe(true)
       expect(result.message).toBeUndefined()
@@ -61,7 +61,7 @@ describe('GetAllMealsUseCase', () => {
 
   it('should return an empty list if the user has no meals', async () => {
     const userId = 'user-id-2'
-    const result = await sut.execute({query: userId, page: 1})
+    const result = await sut.execute({userId: userId, page: 1})
 
     expect(result.success).toBe(true);
     expect(result.message).toBeUndefined()
@@ -74,7 +74,7 @@ describe('GetAllMealsUseCase', () => {
     mealsRepository.findAllByUserId = async () => {
       throw new Error('Database error')
     }
-    const result = await sut.execute({query: 'user-id-3', page: 1})
+    const result = await sut.execute({userId: 'user-id-3', page: 1})
 
     expect(result.success).toBe(false)
     expect(result.message).toBe('Erro ao obter as refeições')

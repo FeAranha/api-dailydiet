@@ -1,7 +1,7 @@
 import { Meal, Prisma} from '@prisma/client'
 
 export interface MealsRepository {
-  findAllByUserId(query: string, page: number): Promise<Meal[]>
+  findAllByUserId(userId: string, page: number): Promise<Meal[]>
   findById(id: string): Promise<Meal | null>
   findOneByUserIdAndMealId(userId: string, mealId: string): Promise<Meal | null>
   create(data: Prisma.MealCreateInput): Promise<Meal>

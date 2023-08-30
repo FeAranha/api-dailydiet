@@ -5,17 +5,17 @@ import { makeGetAllMealUseCase } from '@/use-cases/factories/make-getAll-user-me
 export async function findAllMeals(request: FastifyRequest, reply: FastifyReply) {
   try {
     const findAllMealsQuerySchema = z.object({
-      q: z.string(),
+      
       page: z.coerce.number().min(1).default(1),
     })
 
-    const { q, page } = findAllMealsQuerySchema.parse(request.query)
-
+    const { page } = findAllMealsQuerySchema.parse(request.query)
+    const user_id = request.user.sub;
     const findAllMealsUseCase = makeGetAllMealUseCase()
 
     const { meals } = await findAllMealsUseCase.execute({
-      query: q,
-      page, 
+      userId: user_id,
+      page: page, 
     })
 
     return reply.status(200).send({ meals })
