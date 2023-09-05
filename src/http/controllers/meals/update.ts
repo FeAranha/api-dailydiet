@@ -9,12 +9,20 @@ export async function updateMeal(request: FastifyRequest, reply: FastifyReply) {
     })
 
     const { id } = updateMealParamsSchema.parse(request.params)
+    
+    const updateMealUseCase = makeUpdateMealUseCase();
+    
+    const userId = request.user.sub
+    console.log('MEALid=>', id)
 
+    const user = request.user
+    console.log('**ENDPOINT_UPDATE** USER=>', user )
+    
     const updateMealBodySchema = z.object({
-      title: z.string(),
-      description: z.string(),
-      mealDateTime: z.date(),
-      isDiet: z.boolean(),
+      title: z.string().optional(),
+      description: z.string().optional(),
+      mealDateTime: z.date().optional(),
+      isDiet: z.boolean().optional(),
     })
 
     const {
@@ -24,9 +32,10 @@ export async function updateMeal(request: FastifyRequest, reply: FastifyReply) {
       isDiet,
     } = updateMealBodySchema.parse(request.body);
 
-    const updateMealUseCase = makeUpdateMealUseCase();
-    const userId = request.user.sub;
+    
 
+    console.log('Received Request - Params:', request.params, 'Body:', request.body);
+    
     const updatedMeal = await updateMealUseCase.execute({
       userId,
       id,
@@ -36,11 +45,13 @@ export async function updateMeal(request: FastifyRequest, reply: FastifyReply) {
       isDiet,
     });
 
-    if (!updatedMeal) {
-      return reply.status(404).send('Meal not found.');
+    console.log('Updated Meal=>', updatedMeal)
+
+    if (!updatedMeal.success) {
+      return reply.status(404).send(updatedMeal.message);
     }
 
-    return reply.status(200).send(updatedMeal);
+    return reply.status(200).send(updatedMeal.meal);
   } catch (error) {
     console.error('error updating meal', error)
     return reply.status(500).send('An error occurred while updating the meal.')

@@ -18,7 +18,7 @@ describe('Create Meal (e2e)', () => {
     const mealData = {
       title: '1# meal',
       description: 'delicius meal.',
-      mealDateTime: new Date(),
+      //mealDateTime: new Date(),
       isDiet: true,
     }
     console.log('meal data =>', mealData)
@@ -30,7 +30,7 @@ describe('Create Meal (e2e)', () => {
 
     console.log('Response status:', response.statusCode);
     console.log('Response body:', response.body)
-
+    
     expect(response.statusCode).toEqual(201)
   })
 })

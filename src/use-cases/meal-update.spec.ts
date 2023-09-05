@@ -15,6 +15,7 @@ describe('MealUpdateUseCase', () => {
   it('should update meal when data is valid', async () => {
     const userId = 'user-id';
     const mealId = 'meal-id';
+    
     await mealsRepository.create({
       id: mealId,
       title: 'Meal 1',
@@ -26,7 +27,7 @@ describe('MealUpdateUseCase', () => {
 
     const updatedMealData = {
       id: mealId,
-      title: 'Updated Meal',
+      title: 'hamburguer',
       description: 'Updated Description',
       mealDateTime: new Date(),
       isDiet: true,
@@ -37,6 +38,7 @@ describe('MealUpdateUseCase', () => {
     expect(result.success).toBe(true)
     expect(result.message).toBeUndefined()
     expect(result.meal).toBeDefined()
+    expect(result.meal?.title).toEqual('hamburguer')
 
     const updatedMeal = await mealsRepository.findById(mealId);
     expect(updatedMeal).toEqual(result.meal);
@@ -57,7 +59,7 @@ describe('MealUpdateUseCase', () => {
     const result = await updateMealUseCase.execute(updatedMealData);
     
     expect(result.success).toBe(false);
-    expect(result.message).toBe('Refeição não encontrada.');
+    expect(result.message).toBe('Refeição não encontrada ou não autorizado');
     expect(result.meal).toBeUndefined(); // Nenhuma refeição deve estar presente
   });
 
@@ -76,7 +78,7 @@ describe('MealUpdateUseCase', () => {
     const result = await updateMealUseCase.execute(invalidMealData);
 
     expect(result.success).toBe(false);
-    expect(result.message).toBe('Refeição não encontrada.');
+    expect(result.message).toBe('Refeição não encontrada ou não autorizado');
     expect(result.meal).toBeUndefined();
   });
 });

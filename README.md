@@ -1,17 +1,19 @@
-- DDD
+- Domain-Driven Design
 - Prisma
 - Vitest
 
 # Setup
 - npm i
-- see the scripts in package.json Ex: `npm run test`
+- scripts in package.json Ex: `npm run test or npm t`
 
 # Features
 - Create account
 - Autenticate
-- Create Meals
+- Refresh Token
+- CRUD Meals
 - Search all user meals
-- Search for a user meal
-- Update Meals
-- Delete Meals
+- Search user meal
 - Metrics
+
+# Mobile
+https://github.com/FeAranha/dailyDiet
