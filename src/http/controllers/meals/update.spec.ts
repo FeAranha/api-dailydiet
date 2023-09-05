@@ -33,10 +33,6 @@ describe('Update Meal (e2e)', () => {
       isDiet: true,
     }
 
-    console.log('meal criada a ser editada=>', mealData)
-    console.log('mealID a ser editada=>', mealData.id)
-    console.log('novos dados=>', updatedMealData)
-
     const updateResponse = await request(app.server)
       .patch(`/meals/${mealData.id}`)
       .set('Authorization', `Bearer ${token}`)

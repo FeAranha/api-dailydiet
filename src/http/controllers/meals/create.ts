@@ -14,17 +14,12 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
     const createMealUseCase = makeCreateMealUseCase()
 
-    const user = request.user
-    console.log('**ENDPOINT_CREATE** USER=>', user )
-
     await createMealUseCase.execute({
       title,
       description,
       isDiet,
       userId: request.user.sub
     })
-
-    console.log('Received Request - Params:', request.params, 'Body:', request.body);
     
     return reply.status(201).send();
   } catch (error) {

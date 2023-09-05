@@ -18,7 +18,7 @@ describe('Find all meal (e2e)', () => {
 
     const user = await prisma.user.findFirstOrThrow()
 
-    const mealsData = await prisma.meal.createMany({
+    await prisma.meal.createMany({
       data: [
         {
           userId: user.id,
@@ -40,8 +40,6 @@ describe('Find all meal (e2e)', () => {
         },
       ],
     })
-
-    console.log('mealData=>', mealsData)
     
     const findlAllResponse = await request(app.server)
       .get('/meals')

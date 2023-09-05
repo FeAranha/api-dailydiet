@@ -29,10 +29,8 @@ export class GetUserMetricsUseCase {
       if (meal.isDiet) {
         currentSequenceLength++;
         longestSequenceLength = Math.max(longestSequenceLength, currentSequenceLength)
-        console.log('Current sequence=>', currentSequenceLength)
       } else {
         currentSequenceLength = 0;
-        console.log('Longest sequence:', longestSequenceLength);
       }
     }
 
@@ -52,12 +50,8 @@ export class GetUserMetricsUseCase {
     const notDiets = meals.filter(meal => !meal.isDiet)
 
     const sortedMeals = meals.sort((a, b) => a.mealDateTime.getTime() - b.mealDateTime.getTime());
-    console.log('meals=>', sortedMeals)
     const maxSequence = this.calculateMaxSequence(sortedMeals)
-
-    console.log('maxSeq =>', maxSequence)
-    
-    
+        
     return {
       bestDietSequence: maxSequence,
       totalMeals: meals.length,

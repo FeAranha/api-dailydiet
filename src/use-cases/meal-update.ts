@@ -26,7 +26,6 @@ export class MealUpdateUseCase {
       }
 
       const meal = await this.mealRepository.findById(data.id)
-      console.log('mealId=>', data.id)
       
       if (!meal || meal.userId !== data.userId){
         return { success: false, message: 'Refeição não encontrada ou não autorizado'}

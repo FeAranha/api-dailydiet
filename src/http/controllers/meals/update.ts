@@ -13,10 +13,6 @@ export async function updateMeal(request: FastifyRequest, reply: FastifyReply) {
     const updateMealUseCase = makeUpdateMealUseCase();
     
     const userId = request.user.sub
-    console.log('MEALid=>', id)
-
-    const user = request.user
-    console.log('**ENDPOINT_UPDATE** USER=>', user )
     
     const updateMealBodySchema = z.object({
       title: z.string().optional(),
@@ -31,10 +27,6 @@ export async function updateMeal(request: FastifyRequest, reply: FastifyReply) {
       mealDateTime,
       isDiet,
     } = updateMealBodySchema.parse(request.body);
-
-    
-
-    console.log('Received Request - Params:', request.params, 'Body:', request.body);
     
     const updatedMeal = await updateMealUseCase.execute({
       userId,
@@ -44,8 +36,6 @@ export async function updateMeal(request: FastifyRequest, reply: FastifyReply) {
       mealDateTime,
       isDiet,
     });
-
-    console.log('Updated Meal=>', updatedMeal)
 
     if (!updatedMeal.success) {
       return reply.status(404).send(updatedMeal.message);
